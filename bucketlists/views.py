@@ -10,7 +10,7 @@ from .serializers import BucketListSerializer, GoalSerializer
 
 class BucketListView(APIView):
 
-    #전체 버킷리스트 목록
+    #전체 버킷리스트 목록 + 개별 상세 조회
     def get(self, request, pk=None):
 
         if pk:
@@ -81,7 +81,7 @@ class BucketListView(APIView):
             return Response({"error": "해당 버킷리스트는 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
         
 
-'''class GoalUpdateView(APIView):
+class GoalUpdateView(APIView):
     def patch(self, request, pk):
         goal = Goal.objects.get(pk = pk)
         serializer = GoalSerializer(goal, data=request.data, partial=True)
@@ -102,4 +102,4 @@ class BucketListView(APIView):
             return Response({"message": "목표가 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
         
         except Goal.DoesNotExist:
-            return Response({"error": "목표를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)'''
+            return Response({"error": "목표를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
