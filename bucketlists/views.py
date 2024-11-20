@@ -9,12 +9,21 @@ from .serializers import BucketListSerializer, GoalSerializer
 # Create your views here.
 
 class BucketListView(APIView):
-    permission_classes = [IsAuthenticated]
 
     #전체 버킷리스트 목록
-    def get(self, request):
-        bucket_lists = BucketList.objects.filter(user=request.user)
-        serializer = BucketListSerializer(bucket_lists, many=True)
+    def get(self, request, pk=None):
+
+        if pk:
+            # pk가 주어진 경우, 해당 버킷리스트 반환
+            try:
+                bucket_list = BucketList.objects.get(pk=pk, user=request.user)
+                serializer = BucketListSerializer(bucket_list)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except BucketList.DoesNotExist:
+                return Response({"error": "해당 버킷리스트는 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            bucket_lists = BucketList.objects.filter(user=request.user)
+            serializer = BucketListSerializer(bucket_lists, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -72,7 +81,7 @@ class BucketListView(APIView):
             return Response({"error": "해당 버킷리스트는 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
         
 
-class GoalUpdateView(APIView):
+'''class GoalUpdateView(APIView):
     def patch(self, request, pk):
         goal = Goal.objects.get(pk = pk)
         serializer = GoalSerializer(goal, data=request.data, partial=True)
@@ -93,4 +102,4 @@ class GoalUpdateView(APIView):
             return Response({"message": "목표가 성공적으로 삭제되었습니다."}, status=status.HTTP_204_NO_CONTENT)
         
         except Goal.DoesNotExist:
-            return Response({"error": "목표를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "목표를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)'''
