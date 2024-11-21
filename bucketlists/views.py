@@ -22,10 +22,26 @@ class BucketListView(APIView):
             except BucketList.DoesNotExist:
                 return Response({"error": "해당 버킷리스트는 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
         else:
-            bucket_lists = BucketList.objects.filter(user=request.user)
-            serializer = BucketListSerializer(bucket_lists, many=True)
+            # 필터링 로직 추가
+            category = request.query_params.get('category')
+            filter_type = request.query_params.get('filter')
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            bucket_lists = BucketList.objects.filter(user=request.user)
+            
+            if category:
+                bucket_lists = bucket_lists.filter(category=category)
+
+            if filter_type == 'long_term':
+                bucket_lists = bucket_lists.filter(period='long_term')
+            elif filter_type == 'short_term':
+                bucket_lists = bucket_lists.filter(period='short_term')
+            elif filter_type == 'achieved':
+                bucket_lists = bucket_lists.filter(is_achieved=True)
+            elif filter_type == 'not_achieved':
+                bucket_lists = bucket_lists.filter(is_achieved=False)
+
+            serializer = BucketListSerializer(bucket_lists, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
     
     #버킷리스트 생성    
     def post(self, request):
