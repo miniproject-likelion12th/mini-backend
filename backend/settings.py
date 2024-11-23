@@ -174,6 +174,7 @@ CORS_ALLOW_METHODS = [
 
 CSRF_TRUSTED_ORIGINS = [
     #백엔드 배포주소
+    'http://3.36.120.200:8080/',
     #프론트 배포주소
 ]
 
