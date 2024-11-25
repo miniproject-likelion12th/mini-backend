@@ -161,6 +161,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
 
     # 프론트엔드 도메인 또는 IP 주소
+    'http://irume.s3-website.ap-northeast-2.amazonaws.com/'
 ]
 
 CORS_ALLOW_METHODS = [
@@ -176,6 +177,7 @@ CSRF_TRUSTED_ORIGINS = [
     #백엔드 배포주소
     'http://3.36.120.200:8080/',
     #프론트 배포주소
+    'http://irume.s3-website.ap-northeast-2.amazonaws.com/'
 ]
 
 SIMPLE_JWT = {
