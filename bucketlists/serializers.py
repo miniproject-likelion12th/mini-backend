@@ -67,3 +67,20 @@ class BucketListSerializer(serializers.ModelSerializer):
 
         return instance
     #어라라.. validated_data에서 왜 goalid가 누락되는거지
+
+
+    def to_representation(self, instance):
+        # 기본 직렬화 데이터를 가져옴
+        representation = super().to_representation(instance)
+
+        # 'goals'가 있을 경우, goals를 'year'와 'month' 기준으로 정렬
+        if 'goals' in representation:
+            # GoalSerializer로 직렬화된 목표들을 year, month 순으로 정렬 (None 값을 마지막으로 처리)
+            representation['goals'] = sorted(representation['goals'], key=lambda x: (
+                x.get('year') is None,  # year 값이 None인 경우 마지막에 위치
+                x.get('month') is None, # month 값이 None인 경우 마지막에 위치
+                x.get('year', 0),       # year 값으로 먼저 정렬 (None이면 0으로 처리)
+                x.get('month', 0)       # month 값으로 두 번째로 정렬 (None이면 0으로 처리)
+            ))
+
+        return representation
