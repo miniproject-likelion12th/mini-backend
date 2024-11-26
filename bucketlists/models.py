@@ -24,7 +24,7 @@ class BucketList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bucket_lists')
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    motive = models.TextField(null=True, balnk=True)
+    motive = models.TextField(null=True, blank=True)
     period = models.CharField(max_length=10, choices=PERIOD_CHOICES)
     is_achieved = models.BooleanField(default=False)
     duration_years = models.PositiveIntegerField(null=True, blank=True)
